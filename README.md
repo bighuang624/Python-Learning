@@ -8,11 +8,13 @@
 
 ## 库
 
+### NLP
+
+* [SnowNLP: Simplified Chinese Text Processing](https://github.com/isnowfy/snownlp)
+* [huyingxi/Synonyms: 中文近义词工具包](https://github.com/huyingxi/Synonyms/)
+
 ### 爬虫
 
 * [Requests: 让 HTTP 服务人类 — Requests 2.18.1 文档](http://cn.python-requests.org/zh_CN/latest/)
 * [Beautiful Soup 4.2.0 文档](https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html)
 
-### NIP
-
-* [SnowNLP: Simplified Chinese Text Processing](https://github.com/isnowfy/snownlp)

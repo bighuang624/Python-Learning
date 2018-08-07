@@ -2,7 +2,9 @@
 '''
 武大教务系统 计算绩点
 用法：在命令行中输入 python whu_grade_points.py
-会自动在目录内下载验证码图片，在命令行中输入验证码
+会自动在目录内下载验证码图片，在命令行中输入验证码后，相关信息打印在命令行
+
+注意运行前要在代码的最后部分填写自己的学号和密码
 '''
 
 import requests
@@ -24,6 +26,11 @@ pro_compulsory_credits_with_scores = 0
 public_elective_credits_with_scores = 0
 pro_elective_credits_with_scores = 0
 
+
+public_compulsory_score_sum = 0    # 公共必修
+pro_compulsory_score_sum = 0
+public_elective_score_sum = 0    # 公共必修
+pro_elective_score_sum = 0
 
 '''
 处理验证码的方法，可以随时修改
@@ -158,12 +165,13 @@ def printReport():
     print(u'专业必修已选学分：%.1f' % pro_compulsory_credits)
     print(u'公共选修已选学分：%.1f' % public_elective_credits)
     print(u'专业选修已选学分：%.1f' % pro_elective_credits)
+    print(u'专业必修绩点：%.3f' % (pro_compulsory_sum / pro_compulsory_credits_with_scores))
     print(u'必修绩点：%.3f' % ((public_compulsory_sum + pro_compulsory_sum) / (public_compulsory_credits_with_scores + pro_compulsory_credits_with_scores)))
     print(u'选修绩点：%.3f' % ((public_elective_sum + pro_elective_sum) / (public_elective_credits_with_scores + pro_elective_credits_with_scores)))
+    print(u'必修+专选绩点：%.3f' % ((public_compulsory_sum + pro_compulsory_sum + pro_elective_sum) / (public_compulsory_credits_with_scores + pro_compulsory_credits_with_scores + pro_elective_credits_with_scores)))
     print(u'总绩点：%.3f' % ((public_compulsory_sum + pro_compulsory_sum + public_elective_sum + pro_elective_sum) / (public_compulsory_credits_with_scores + pro_compulsory_credits_with_scores + public_elective_credits_with_scores + pro_elective_credits_with_scores)))
-
-
-
+    print(u'必修平均分：%.3f' % ((public_compulsory_score_sum + pro_compulsory_score_sum) / (public_compulsory_credits_with_scores + pro_compulsory_credits_with_scores)))
+    print(u'总平均分：%.3f' % ((public_compulsory_score_sum + pro_compulsory_score_sum + public_elective_score_sum + pro_elective_score_sum) / (public_compulsory_credits_with_scores + pro_compulsory_credits_with_scores + public_elective_credits_with_scores + pro_elective_credits_with_scores)))
 '''
 计算学分、绩点
 '''
@@ -171,29 +179,34 @@ def calGradePoint(lessonType, credit, score):
     global public_compulsory_sum, pro_compulsory_sum, public_elective_sum, pro_elective_sum
     global public_compulsory_credits, pro_compulsory_credits, public_elective_credits, pro_elective_credits
     global public_compulsory_credits_with_scores, pro_compulsory_credits_with_scores, public_elective_credits_with_scores, pro_elective_credits_with_scores
+    global public_compulsory_score_sum, pro_compulsory_score_sum, public_elective_score_sum, pro_elective_score_sum
     if lessonType == u'公共必修':
         public_compulsory_credits += float(credit)
         if score != '':
             public_compulsory_credits_with_scores += float(credit)
             public_compulsory_sum += float(credit) * getGradePoint(float(score))
+            public_compulsory_score_sum += float(credit) * float(score)
 
     elif lessonType == u'专业必修':
         pro_compulsory_credits += float(credit)
         if score != '':
             pro_compulsory_credits_with_scores += float(credit)
             pro_compulsory_sum += float(credit) * getGradePoint(float(score))
+            pro_compulsory_score_sum += float(credit) * float(score)
 
     elif lessonType == u'公共选修':
         public_elective_credits += float(credit)
         if score != '':
             public_elective_credits_with_scores += float(credit)
             public_elective_sum += float(credit) * getGradePoint(float(score))
+            public_elective_score_sum += float(credit) * float(score)
 
     else:
         pro_elective_credits += float(credit)
         if score != '':
             pro_elective_credits_with_scores += float(credit)
             pro_elective_sum += float(credit) * getGradePoint(float(score))
+            pro_elective_score_sum += float(credit) * float(score)
 
 
 '''
@@ -224,7 +237,7 @@ def getGradePoint(score):
 
 # 请在这里填写自己的学号和密码
 if __name__ == '__main__':
-    session = login('*************', '********', kill_captcha, 1)
+    session = login('20***********', '******', kill_captcha, 1)
     if session != None:
         csrftoken = getCsrftoken(session)
         html = getScoreHtml(session, csrftoken)
