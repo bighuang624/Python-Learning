@@ -12,6 +12,9 @@ s = word2vec.LineSentence('./三体全集_segmented.txt')
 # workers: 并行数
 model = word2vec.Word2Vec(s, size=20, window=5, min_count=5, workers=4)
 
+model.save('wordvec_model.pkl')
+model = word2vec.Word2Vec.load('wordvec_model.pkl')
+
 # 打印词向量
 print(model['叶文洁'])
 
