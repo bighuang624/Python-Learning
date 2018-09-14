@@ -17,3 +17,7 @@
 ## Scrapy-learning
 
 学习 Scrapy 的练习代码
+
+## word2vec-test
+
+一个使用 Word2vec 获得词向量的 demo
